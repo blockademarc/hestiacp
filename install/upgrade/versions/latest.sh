@@ -204,3 +204,8 @@ if [ -z "$GZIP_LVL_CHECK" ]; then
     echo "[ * ] Updating backup compression level variable..."
     $BIN/v-change-sys-config-value "BACKUP_GZIP" '9'
 fi
+
+# Update web templates to ensure that working set is up-to-date
+# [TODO] Move this step to v1.2.1 upgrade script when version is bumped
+echo "[ * ] Updating default web templates..."
+$BIN/v-update-web-templates
