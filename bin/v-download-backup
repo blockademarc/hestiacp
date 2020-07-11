@@ -32,6 +32,7 @@ source $HESTIA/conf/hestia.conf
 # Defining ftps command function
 ftpsc() {
     /usr/bin/lftp "$USERNAME":"$PASSWORD"@"$HOST":"$PORT" <<EOF
+	cd $BACKUP
     $1
     $2
     $3
