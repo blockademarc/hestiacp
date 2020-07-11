@@ -36,6 +36,32 @@ source $HESTIA/func/db.sh
 source $HESTIA/func/rebuild.sh
 source $HESTIA/conf/hestia.conf
 
+
+# Defining ftps command function
+ftpsc() {
+    /usr/bin/lftp "$USERNAME":"$PASSWORD"@"$HOST":"$PORT" <<EOF
+	cd $BACKUP
+    $1
+    $2
+    $3
+    quit
+EOF
+}
+
+# FTPS backup download function
+ftps_download() {
+    source $HESTIA/conf/ftps.backup.conf
+    if [ -z "$PORT" ]; then
+        PORT='21'
+    fi
+    if [ -z $BPATH ]; then
+        ftpsc "get $1"
+    else
+        ftpsc "cd $BPATH" "get $1"
+    fi
+}
+
+
 # Defining FTP command function
 ftpc() {
     /usr/bin/ftp -n $HOST $PORT <<EOF
