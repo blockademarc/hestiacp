@@ -1,3 +1,11 @@
+    $('select[name=v_ftps]').change(function(){
+        if($(this).val() == 'yes'){
+            $('.ftps.description').show();
+        } else {
+            $('.ftps.description').hide();
+        }
+    });
+
     $('select[name=v_sftp]').change(function(){
         if($(this).val() == 'yes'){
             $('.sftp.description').show();
