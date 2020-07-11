@@ -565,6 +565,122 @@ local_backup(){
 }
 
 
+# Defining ftps command function
+ftpsc() {
+    /usr/bin/lftp "$USERNAME":"$PASSWORD"@"$HOST":"$PORT" <<EOF
+    $1
+    $2
+    $3
+    quit
+EOF
+}
+
+# Defining ftps storage function
+ftps_backup() {
+    # Checking config
+    if [ ! -e "$HESTIA/conf/ftps.backup.conf" ]; then
+        error="ftps.backup.conf doesn't exist"
+        rm -rf "$tmpdir"
+        rm -f "$BACKUP"/"$user".log
+        echo "$error" |$SENDMAIL -s "$subj" "$email" "$notify"
+        sed -i "/ $user /d" "$HESTIA"/data/queue/backup.pipe
+        check_result "$E_NOTEXIST" "$error"
+    fi
+
+    # Parse config
+    source "$HESTIA"/conf/ftps.backup.conf
+
+    # Set default port
+    if [ -z "$(grep 'PORT=' "$HESTIA"/conf/ftps.backup.conf)" ]; then
+        PORT='21'
+    fi
+
+    # Checking variables
+    if [ -z "$HOST" ] || [ -z "$USERNAME" ] || [ -z "$PASSWORD" ]; then
+        error="Can't parse ftps backup configuration"
+        rm -rf "$tmpdir"
+        rm -f "$BACKUP"/"$user".log
+        echo "$error" |$SENDMAIL -s "$subj" "$email" "$notify"
+        sed -i "/ $user /d" "$HESTIA"/data/queue/backup.pipe
+        check_result "$E_PARSING" "$error"
+    fi
+
+    # Debug info
+    echo -e "$(date "+%F %T") Remote: ftps://$HOST$BPATH/$user.$backup_new_date.tar"
+
+    # Checking ftps connection
+    fconn=$(ftpsc)
+    ferror=$(echo "$fconn" |grep -i -e failed -e error -e "Can't" -e "not conn")
+    if [ ! -z "$ferror" ]; then
+        error="Error: can't login to ftps ftps://$USERNAME@$HOST"
+        rm -rf "$tmpdir"
+        rm -f "$BACKUP"/"$user".log
+        echo "$error" |$SENDMAIL -s "$subj" "$email" "$notify"
+        sed -i "/ $user /d" "$HESTIA"/data/queue/backup.pipe
+        check_result "$E_CONNECT" "$error"
+    fi
+
+    # Check ftps permissions
+    if [ -z "$BPATH" ]; then
+            ftmpdir="vst.bK76A9SUkt"
+        else
+            ftpsc "mkdir $BPATH" > /dev/null 2>&1
+            ftmpdir="$BPATH/vst.bK76A9SUkt"
+    fi
+    ftpsc "mkdir $ftmpdir" "rm $ftmpdir"
+    ftps_result=$(ftpsc "mkdir $ftmpdir" "rm $ftmpdir" |grep -v Trying)
+    if [ ! -z "$ftps_result" ] ; then
+        error="Can't create ftps backup folder ftps://$HOST$BPATH"
+        rm -rf "$tmpdir"
+        rm -f "$BACKUP"/"$user".log
+        echo "$error" |$SENDMAIL -s "$subj" "$email" "$notify"
+        sed -i "/ $user /d" "$HESTIA"/data/queue/backup.pipe
+        check_result "$E_FTPS" "$error"
+    fi
+
+    # Checking retention
+    if [ -z "$BPATH" ]; then
+        backup_list=$(ftpsc "ls" |awk '{print $9}' |grep "^$user\.")
+    else
+        backup_list=$(ftpsc "cd $BPATH" "ls" |awk '{print $9}' |grep "^$user\.")
+    fi
+    backups_count=$(echo "$backup_list" |wc -l)
+    if [ "$backups_count" -ge "$BACKUPS" ]; then
+        backups_rm_number=$((backups_count - BACKUPS + 1))
+        for backup in $(echo "$backup_list" |head -n $backups_rm_number); do 
+            backup_date=$(echo "$backup" |sed -e "s/$user.//" -e "s/.tar$//")
+            echo -e "$(date "+%F %T") Rotated ftps backup: $backup_date" |\
+                tee -a "$BACKUP"/"$user".log
+            if [ -z "$BPATH" ]; then
+                ftpsc "rm $backup"
+            else
+                ftpsc "cd $BPATH" "rm $backup"
+            fi
+        done
+    fi
+
+    # Uploading backup archive
+    if [ "$localbackup" = 'yes' ]; then
+        cd "$BACKUP"
+        if [ -z "$BPATH" ]; then
+            ftpsc "put $user.$backup_new_date.tar"
+         else
+            ftpsc "cd $BPATH" "put $user.$backup_new_date.tar"
+        fi
+    else
+        cd "$tmpdir"
+        tar -cf "$BACKUP"/"$user"."$backup_new_date".tar .
+        cd "$BACKUP"/
+        if [ -z "$BPATH" ]; then
+            ftpsc "put $user.$backup_new_date.tar"
+        else
+            ftpsc "cd $BPATH" "put $user.$backup_new_date.tar"
+        fi
+        rm -f "$user"."$backup_new_date".tar
+    fi
+}
+
+
 # Defining ftp command function
 ftpc() {
     /usr/bin/ftp -np $HOST $PORT <<EOF
@@ -885,6 +1001,7 @@ echo -e "\n-- SUMMARY --" |tee -a $BACKUP/$user.log
 for backup_type in $(echo -e "${BACKUP_SYSTEM//,/\\n}"); do
     case $backup_type in
         local) local_backup ;;
+	ftps) ftps_backup ;;
         ftp)   ftp_backup ;;
         sftp)  sftp_backup ;;
         google) google_backup ;;
