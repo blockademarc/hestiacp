@@ -578,6 +578,7 @@ $LANG['hr'] = array(
     'Remote backup' => 'Udaljena sigurnosna kopija',
     'ftp' => 'FTP',
     'sftp' => 'SFTP',
+	'ftps' => 'FTPS',
     'SFTP Chroot' => 'SFTP Chroot',
     'FileSystem Disk Quota' => 'Ograničenje diskovnog prostora',
     'Hestia Control Panel Plugins' => 'Dodaci',
