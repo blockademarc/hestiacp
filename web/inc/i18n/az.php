@@ -554,6 +554,7 @@ $LANG['az'] = array(
     'Remote backup' => 'Uzaqdan backup',
     'ftp' => 'FTP',
     'sftp' => 'SFTP',
+	'ftps' => 'FTPS',
     'SFTP Chroot' => 'SFTP Chroot',
     'FileSystem Disk Quota' => 'FaylSistemi disk kvotası',
     'Vesta Control Panel Plugins' => 'Vesta Nəzarət Paneli əlavələri',
