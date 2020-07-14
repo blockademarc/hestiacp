@@ -553,6 +553,7 @@ $LANG['ua'] = array(
     'Remote backup' => 'Віддалений архів',
     'ftp' => 'FTP',
     'sftp' => 'SFTP',
+	'ftps' => 'FTPS',
     'SFTP Chroot' => 'SFTP Chroot',
     'FileSystem Disk Quota' => 'Дискова квота файлової системи',
     'Hestia Control Panel Plugins' => 'Плагіни Hestia Control Panel',
