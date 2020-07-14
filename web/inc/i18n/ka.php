@@ -572,6 +572,7 @@ $LANG['ka'] = array(
     'Remote backup' => 'დაშორებული მარქაფი',
     'ftp' => 'FTP',
     'sftp' => 'SFTP',
+	'ftps' => 'FTPS',
     'SFTP Chroot' => 'SFTP Chroot',
     'FileSystem Disk Quota' => 'ფაილური სისტემის დისკის კვოტა',
     'Hestia Control Panel Plugins' => 'Hestia მართვის პანელის ჩადგმები',
