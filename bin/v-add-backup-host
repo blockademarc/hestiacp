@@ -23,7 +23,7 @@ source $HESTIA/conf/hestia.conf
 
 # Defining ftps command function
 ftpsc() {
-    /usr/bin/lftp "$USERNAME":"$PASSWORD"@"$HOST":"$PORT" <<EOF
+    lftp "$USERNAME":"$PASSWORD"@"$HOST":"$PORT" <<EOF
     $1
     $2
     $3
@@ -132,22 +132,21 @@ if [ "$type" = 'ftps' ]; then
         port=21
     fi
     fconn=$(ftpsc 2>&1)
-    ferror=$(echo $fconn |\
-        grep -i -e failed -e error -e "can't" -e "not conn" -e "incorrect")
+    ferror=$(echo "$fconn" |grep -i -e failed -e error -e "Can't" -e "not conn" -e "incorrect")
     if [ ! -z "$ferror" ]; then
         echo "Error: can't login to ftps $user@$host"
         log_event "$E_CONNECT" "$ARGUMENTS"
         exit $E_CONNECT
     fi
 
-    # Checking write permissions
+	# Checking write permissions
     if [ -z $path ]; then
         ftmpdir="vst.bK76A9SUkt"
     else
         ftpsc "mkdir $path" > /dev/null 2>&1
         ftmpdir="$path/vst.bK76A9SUkt"
     fi
-    ftps_result=$(ftpsc "mkdir $ftmpdir" "rm $ftmpdir"|grep -v Trying)
+    ftps_result=$(ftpsc "mkdir $ftmpdir" "rm $ftmpdir" |grep -v Trying)
     if [ ! -z "$ftps_result" ] ; then
         echo "$ftps_result"
         rm -rf $tmpdir
@@ -156,6 +155,7 @@ if [ "$type" = 'ftps' ]; then
         exit $E_FTP
     fi
 fi
+
 if [ "$type" = 'ftp' ]; then
     if [ -z $port ]; then
         port=21
