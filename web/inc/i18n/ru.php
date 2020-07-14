@@ -574,6 +574,7 @@ $LANG['ru'] = array(
     'Remote backup' => 'Удаленное архив',
     'ftp' => 'FTP',
     'sftp' => 'SFTP',
+	'ftps' => 'FTPS',
     'SFTP Chroot' => 'SFTP Chroot',
     'FileSystem Disk Quota' => 'Дисковая квота файловой системы',
     'Hestia Control Panel Plugins' => 'Плагины Hestia Control Panel',
