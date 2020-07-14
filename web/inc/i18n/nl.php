@@ -577,6 +577,7 @@ $LANG['nl'] = array(
     'Remote backup' => 'Externe backup',
     'ftp' => 'FTP',
     'sftp' => 'SFTP',
+	'ftps' => 'FTPS',
     'SFTP Chroot' => 'SFTP Chroot',
     'FileSystem Disk Quota' => 'Bestandssysteem Schijf Quotum',
     'Hestia Control Panel Plugins' => 'Plugins',
