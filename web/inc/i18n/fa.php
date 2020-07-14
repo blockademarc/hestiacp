@@ -556,6 +556,7 @@ $LANG['fa'] = array(
     'Remote backup' => 'پشتیبان دوردست',
     'ftp' => 'FTP',
     'sftp' => 'SFTP',
+	'ftps' => 'FTPS',
     'SFTP Chroot' => 'SFTP Chroot',
     'FileSystem Disk Quota' => 'سهمیه فایل سیستم دیسك ',
     'Hestia Control Panel Plugins' => 'افزونه های كنترل پنل وستا',
