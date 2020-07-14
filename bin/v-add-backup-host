@@ -109,6 +109,10 @@ if [ "$type" != 'local' ];then
         which expect >/dev/null 2>&1
         check_result $? "expect command not found"  $E_NOTEXIST
     fi
+	if [ "$type" = 'ftps' ]; then
+        which expect >/dev/null 2>&1
+        check_result $? "expect command not found"  $E_NOTEXIST
+    fi
     if ! (is_ip_format_valid "$host" >/dev/null); then
         host "$host" >/dev/null 2>&1
         check_result $? "host connection failed" "$E_CONNECT"
