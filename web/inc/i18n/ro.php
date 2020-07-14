@@ -574,6 +574,7 @@ $LANG['ro'] = array(
     'Remote backup' => 'Copie de securitate la distantă',
     'ftp' => 'FTP',
     'sftp' => 'SFTP',
+	'ftps' => 'FTPS',
     'SFTP Chroot' => 'SFTP Chroot',
     'FileSystem Disk Quota' => 'FileSystem Disk Quota',
     'Hestia Control Panel Plugins' => 'Plugin-uri panoul de control Hestia',
