@@ -584,6 +584,7 @@ $LANG['cn'] = array(
     'Remote backup' => '远程备份',
     'ftp' => 'FTP',
     'sftp' => 'SFTP',
+	'ftps' => 'FTPS',
     'SFTP Chroot' => 'SFTP Chroot',
     'FileSystem Disk Quota' => '文件系统磁盘配额',
     'Hestia Control Panel Plugins' => 'Hestia 管理系统的插件',
