@@ -575,6 +575,7 @@ $LANG['fr'] = array(
     'Remote backup' => 'Sauvegarde à distance',
     'ftp' => 'FTP',
     'sftp' => 'SFTP',
+	'ftps' => 'FTPS',
     'SFTP Chroot' => 'SFTP Chroot',
     'FileSystem Disk Quota' => 'Quota du Système de Fichiers',
     'Hestia Control Panel Plugins' => 'Plugins',
