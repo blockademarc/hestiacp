@@ -23,8 +23,10 @@ source $HESTIA/conf/hestia.conf
 
 # Defining ftps command function
 ftpsc() {
-    lftp "$USERNAME":"$PASSWORD"@"$HOST":"$PORT" <<EOF
-    $1
+    /usr/bin/lftp "$HOST":"$PORT" <<EOF
+    user "$USERNAME"
+	"$PASSWORD"
+	$1
     $2
     $3
     quit
