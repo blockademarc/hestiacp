@@ -23,9 +23,9 @@ source $HESTIA/conf/hestia.conf
 
 # Defining ftps command function
 ftpsc() {
-    /usr/bin/lftp "$HOST":"$PORT" <<EOF
-    quote user "$USERNAME"
-	quote "$PASSWORD"
+    /usr/bin/lftp "$host":"$port" <<EOF
+    quote user "$user"
+	quote "$password"
 	$1
     $2
     $3
