@@ -643,7 +643,7 @@
                                                             <select class="vst-list" name="v_backup_type">
                                                                 <option value='ftp'><?php print __('ftp'); ?></option>
                                                                 <option value='sftp' <?php if((!empty($v_backup_type)) && (trim($v_backup_type,"'")  == 'sftp' )) echo 'selected="selected"'; ?>><?php print __('sftp'); ?></option>
-																<option value='ftps'><?php print __('ftps'); ?></option>
+																<option value='ftps' <?php if((!empty($v_backup_type)) && (trim($v_backup_type,"'")  == 'ftps' )) echo 'selected="selected"'; ?>><?php print __('ftps'); ?></option>
 															</select>
                                                             <br><br>
                                                         </td>
