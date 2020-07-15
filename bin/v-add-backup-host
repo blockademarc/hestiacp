@@ -134,8 +134,8 @@ if [ "$type" = 'ftps' ]; then
         port=21
     fi
     fconn=$(ftpsc 2>&1)
-    ferror=$(echo "$fconn" |grep -i -e failed -e error -e "Can't" -e "not conn" -e "incorrect")
-    if [ ! -z "$ferror" ]; then
+    ferror=$(echo "$fconn" |grep -i -e failed -e error -e "Can't" -e "not conn")
+	if [ ! -z "$ferror" ]; then
         echo "Error: can't login to ftps $user@$host"
         log_event "$E_CONNECT" "$ARGUMENTS"
         exit $E_CONNECT
