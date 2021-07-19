@@ -40,8 +40,6 @@ local_backup(){
 }
 
 
-
-
 # Defining ftps command function
 ftpsc() {
     /usr/bin/lftp "$USERNAME":"$PASSWORD"@"$HOST":"$PORT" <<EOF
@@ -69,7 +67,7 @@ ftps_backup() {
 
     # Set default port
     if [ -z "$(grep 'PORT=' "$HESTIA"/conf/ftps.backup.conf)" ]; then
-        PORT='21'
+        PORT='22'
     fi
 
     # Checking variables
@@ -99,13 +97,13 @@ ftps_backup() {
 
     # Check ftps permissions
     if [ -z "$BPATH" ]; then
-            ftmpdir="vst.bK76A9SUkt"
+            ftpsmpdir="vst.bK76A9SUkt"
         else
             ftpsc "mkdir $BPATH" > /dev/null 2>&1
-            ftmpdir="$BPATH/vst.bK76A9SUkt"
+            ftpsmpdir="$BPATH/vst.bK76A9SUkt"
     fi
-    ftpsc "mkdir $ftmpdir" "rm $ftmpdir"
-    ftps_result=$(ftpsc "mkdir $ftmpdir" "rm $ftmpdir" |grep -v Trying)
+    ftpsc "mkdir $ftpsmpdir" "rm $ftpsmpdir"
+    ftps_result=$(ftpsc "mkdir $ftpsmpdir" "rm $ftpsmpdir" |grep -v Trying)
     if [ ! -z "$ftps_result" ] ; then
         error="Can't create ftps backup folder ftps://$HOST$BPATH"
         echo "$error" |$SENDMAIL -s "$subj" $email $notify
